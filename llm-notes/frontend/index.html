@@ -1,42 +1,102 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LLM Notes Summarizer</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    .result { margin-top: 30px; }
-    textarea { width: 100%; height: 200px; }
+    body {
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: #003366;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffffcc;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+      padding: 8px;
+    }
+    button {
+      display: block;
+      margin: auto;
+      background-color: #007bff;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 30px;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: #f9f9f9;
+      resize: none;
+    }
+    .keywords {
+      font-weight: bold;
+      color: #006600;
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 <body>
-  <h2>Upload Notes (PDF)</h2>
-  <form id="upload-form" enctype="multipart/form-data">
-    <input type="file" id="file" accept=".pdf"/>
-    <button type="submit">Summarize</button>
-  </form>
+  <div class="container">
+    <h2>🧠 LLM Notes Summarizer</h2>
+    <form id="upload-form" enctype="multipart/form-data">
+      <input type="file" id="file" accept=".pdf" />
+      <button type="submit">Summarize PDF</button>
+    </form>
 
-  <div class="result" id="result"></div>
+    <div class="result" id="result"></div>
+  </div>
 
   <script>
     document.getElementById("upload-form").addEventListener("submit", async function(event) {
       event.preventDefault();
       const fileInput = document.getElementById("file");
       const file = fileInput.files[0];
+      if (!file) return alert("Please select a PDF file!");
+
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("http://localhost:8000/upload/", {
+      const response = await fetch("http://13.60.180.74:8000/upload/", {
         method: "POST",
         body: formData
       });
 
       const data = await response.json();
+
       document.getElementById("result").innerHTML = `
-        <h3>Summary</h3>
+        <h3>📝 Summary</h3>
         <textarea readonly>${data.summary || "Error: " + data.error}</textarea>
-        <h3>Keywords</h3>
-        <p>${(data.keywords || []).join(", ")}</p>
+        <h3>🔑 Keywords</h3>
+        <p class="keywords">${(data.keywords || []).join(", ")}</p>
       `;
     });
   </script>
