@@ -1,9 +1,8 @@
-
 import subprocess
 import json
 import textwrap
 
-OLLAMA_MODEL = "mistral"
+OLLAMA_MODEL = "tinyllama"
 
 def generate_summary_and_keywords(text):
     prompt = f"""
