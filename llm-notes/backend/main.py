@@ -1,8 +1,7 @@
-
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 import os
-from pdf_reader import extract_text_from_pdf
+from file_reader import extract_text
 from summarizer import generate_summary_and_keywords
 
 app = FastAPI()
